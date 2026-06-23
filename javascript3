@@ -1,0 +1,7 @@
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById("adminPanel").style.display = "block";
+  } else {
+    document.getElementById("adminPanel").style.display = "none";
+  }
+});
