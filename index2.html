@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NgondiGames Dashboard</title>
+</head>
+<body>
+  <h1>🔥 NgondiGames Admin Dashboard</h1>
+
+  <h3>➕ Ongeza Game</h3>
+
+  <input id="name" placeholder="Jina la game" />
+  <input id="category" placeholder="Category" />
+  <input id="link" placeholder="Download link" />
+
+  <button onclick="addGame()">Save Game</button>
+
+  <hr>
+
+  <h3>📦 Games Zilizopo</h3>
+  <ul id="gameList"></ul>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } 
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // 🔥 Firebase config yako (weka yako hapa)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "XXXX",
+      appId: "XXXX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ➕ ADD GAME
+    window.addGame = async function () {
+      let name = document.getElementById("name").value;
+      let category = document.getElementById("category").value;
+      let link = document.getElementById("link").value;
+
+      await addDoc(collection(db, "games"), {
+        name,
+        category,
+        link
+      });
+
+      alert("Game imehifadhiwa!");
+      loadGames();
+    }
+
+    // 📦 LOAD GAMES
+    async function loadGames() {
+      let list = document.getElementById("gameList");
+      list.innerHTML = "";
+
+      const querySnapshot = await getDocs(collection(db, "games"));
+
+      querySnapshot.forEach((doc) => {
+        let data = doc.data();
+
+        let li = document.createElement("li");
+        li.innerHTML = `
+          <b>${data.name}</b> - ${data.category}
+          <br>
+          <a href="${data.link}" target="_blank">Download</a>
+          <hr>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    loadGames();
+  </script>
+</body>
+</html>
