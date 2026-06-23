@@ -1,0 +1,13 @@
+window.login = function () {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Login successful!");
+      document.getElementById("adminPanel").style.display = "block";
+    })
+    .catch((err) => {
+      alert(err.message);
+    });
+}
