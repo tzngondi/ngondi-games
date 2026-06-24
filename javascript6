@@ -1,0 +1,4 @@
+function downloadGame(url) {
+  alert("Tafadhali lipa kwanza ili kupakua game");
+  window.location.href = "/payment-page.html?file=" + url;
+}
