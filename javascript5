@@ -1,0 +1,21 @@
+window.uploadGame = async function () {
+  let file = document.getElementById("file").files[0];
+  let name = document.getElementById("name").value;
+  let category = document.getElementById("category").value;
+
+  let storageRef = ref(storage, "games/" + file.name);
+
+  await uploadBytes(storageRef, file);
+
+  let url = await getDownloadURL(storageRef);
+
+  await addDoc(collection(db, "games"), {
+    name,
+    category,
+    link: url,
+    createdAt: new Date()
+  });
+
+  alert("Game uploaded!");
+  loadGames();
+}
